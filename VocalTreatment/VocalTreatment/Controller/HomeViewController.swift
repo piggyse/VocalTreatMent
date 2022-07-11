@@ -18,7 +18,7 @@ final class HomeViewController: UIViewController {
         return stackView
     }()
     
-    private let phonationRangeButton: UIButton = {
+    private let loudnessButton: UIButton = {
         let button = UIButton()
         button.setTitle("목소리 크기 조절", for: .normal)
         button.setTitleColor(UIColor.label, for: .normal)
@@ -64,7 +64,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func addViews() {
-        [phonationRangeButton, phonationTimeButton, wordMemorizationButton].forEach {
+        [loudnessButton, phonationTimeButton, wordMemorizationButton].forEach {
             self.stackView.addArrangedSubview($0)
         }
         
@@ -82,8 +82,8 @@ final class HomeViewController: UIViewController {
     }
     
     func setAction() {
-        phonationRangeButton.addAction(UIAction { [weak self]_  in
-            self?.navigationController?.pushViewController(PhonationRangeViewController(),
+        loudnessButton.addAction(UIAction { [weak self]_  in
+            self?.navigationController?.pushViewController(LoudnessViewController(),
                                                           animated: true)},
                                                           for: .touchUpInside)
             

@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PhonationRangeViewController: UIViewController {
+final class LoudnessViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
