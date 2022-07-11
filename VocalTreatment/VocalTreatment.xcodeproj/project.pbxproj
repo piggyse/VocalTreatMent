@@ -62,7 +62,10 @@
 		8D09A3BB2872C051008675EC /* VocalTreatment */ = {
 			isa = PBXGroup;
 			children = (
-				8DDAF7D0287BED56004C592C /* Presentation */,
+				8DDAF7D0287BED56004C592C /* Controller */,
+				8DDAF7D3287BFAEB004C592C /* View */,
+				8DDAF7D1287BFAD8004C592C /* Model */,
+				8DDAF7D2287BFAE0004C592C /* Common */,
 				8D09A3D02872C082008675EC /* SupportingFiles */,
 				8D09A3CA2872C057008675EC /* Info.plist */,
 			);
@@ -80,7 +83,7 @@
 			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
-		8DDAF7D0287BED56004C592C /* Presentation */ = {
+		8DDAF7D0287BED56004C592C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				8D09A3C02872C051008675EC /* HomeViewController.swift */,
@@ -88,7 +91,28 @@
 				8DDAF7CC287BECD3004C592C /* PhonationTimeViewController.swift */,
 				8DDAF7CE287BED29004C592C /* WordMemorizationViewController.swift */,
 			);
-			path = Presentation;
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		8DDAF7D1287BFAD8004C592C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8DDAF7D2287BFAE0004C592C /* Common */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		8DDAF7D3287BFAEB004C592C /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
