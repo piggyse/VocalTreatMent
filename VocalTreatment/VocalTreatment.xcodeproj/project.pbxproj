@@ -9,20 +9,26 @@
 /* Begin PBXBuildFile section */
 		8D09A3BD2872C051008675EC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D09A3BC2872C051008675EC /* AppDelegate.swift */; };
 		8D09A3BF2872C051008675EC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D09A3BE2872C051008675EC /* SceneDelegate.swift */; };
-		8D09A3C12872C051008675EC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D09A3C02872C051008675EC /* ViewController.swift */; };
+		8D09A3C12872C051008675EC /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D09A3C02872C051008675EC /* HomeViewController.swift */; };
 		8D09A3C62872C057008675EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D09A3C52872C057008675EC /* Assets.xcassets */; };
 		8D09A3D42872C141008675EC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D09A3D32872C141008675EC /* LaunchScreen.storyboard */; };
 		8D09A3D72872C3AF008675EC /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8D09A3D62872C3AF008675EC /* SnapKit */; };
+		8DDAF7CB287BEBEF004C592C /* PhonationRangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DDAF7CA287BEBEF004C592C /* PhonationRangeViewController.swift */; };
+		8DDAF7CD287BECD3004C592C /* PhonationTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DDAF7CC287BECD3004C592C /* PhonationTimeViewController.swift */; };
+		8DDAF7CF287BED29004C592C /* WordMemorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DDAF7CE287BED29004C592C /* WordMemorizationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8D09A3B92872C051008675EC /* VocalTreatment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VocalTreatment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D09A3BC2872C051008675EC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8D09A3BE2872C051008675EC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		8D09A3C02872C051008675EC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8D09A3C02872C051008675EC /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		8D09A3C52872C057008675EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D09A3CA2872C057008675EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D09A3D32872C141008675EC /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8DDAF7CA287BEBEF004C592C /* PhonationRangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhonationRangeViewController.swift; sourceTree = "<group>"; };
+		8DDAF7CC287BECD3004C592C /* PhonationTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhonationTimeViewController.swift; sourceTree = "<group>"; };
+		8DDAF7CE287BED29004C592C /* WordMemorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMemorizationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +62,7 @@
 		8D09A3BB2872C051008675EC /* VocalTreatment */ = {
 			isa = PBXGroup;
 			children = (
-				8D09A3C02872C051008675EC /* ViewController.swift */,
+				8DDAF7D0287BED56004C592C /* Presentation */,
 				8D09A3D02872C082008675EC /* SupportingFiles */,
 				8D09A3CA2872C057008675EC /* Info.plist */,
 			);
@@ -72,6 +78,17 @@
 				8D09A3C52872C057008675EC /* Assets.xcassets */,
 			);
 			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		8DDAF7D0287BED56004C592C /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				8D09A3C02872C051008675EC /* HomeViewController.swift */,
+				8DDAF7CA287BEBEF004C592C /* PhonationRangeViewController.swift */,
+				8DDAF7CC287BECD3004C592C /* PhonationTimeViewController.swift */,
+				8DDAF7CE287BED29004C592C /* WordMemorizationViewController.swift */,
+			);
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,7 +167,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D09A3C12872C051008675EC /* ViewController.swift in Sources */,
+				8DDAF7CF287BED29004C592C /* WordMemorizationViewController.swift in Sources */,
+				8D09A3C12872C051008675EC /* HomeViewController.swift in Sources */,
+				8DDAF7CB287BEBEF004C592C /* PhonationRangeViewController.swift in Sources */,
+				8DDAF7CD287BECD3004C592C /* PhonationTimeViewController.swift in Sources */,
 				8D09A3BD2872C051008675EC /* AppDelegate.swift in Sources */,
 				8D09A3BF2872C051008675EC /* SceneDelegate.swift in Sources */,
 			);
