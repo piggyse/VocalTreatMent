@@ -10,9 +10,74 @@ import SnapKit
 
 final class HomeViewController: UIViewController {
     
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.spacing = 16
+        return stackView
+    }()
+    
+    private let phonationRangeButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("목소리 크기 조절", for: .normal)
+        button.setTitleColor(UIColor.label, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
+        button.backgroundColor = .secondarySystemBackground
+        button.layer.cornerRadius = 8
+        button.layer.cornerCurve = .continuous
+        return button
+    }()
+    
+    private let phonationTimeButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("연장 발성", for: .normal)
+        button.setTitleColor(UIColor.label, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
+        button.backgroundColor = .secondarySystemBackground
+        button.layer.cornerRadius = 8
+        button.layer.cornerCurve = .continuous
+        return button
+    }()
+    
+    private let wordMemorizationButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("단어 기억하기", for: .normal)
+        button.setTitleColor(UIColor.label, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
+        button.backgroundColor = .secondarySystemBackground
+        button.layer.cornerRadius = 8
+        button.layer.cornerCurve = .continuous
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .red
+        self.view.backgroundColor = .systemBackground
+        configUI()
+    }
+
+    private func configUI() {
+        addViews()
+        setLayouts()
+    }
+    
+    private func addViews() {
+        [phonationRangeButton, phonationTimeButton, wordMemorizationButton].forEach {
+            self.stackView.addArrangedSubview($0)
+        }
+        
+        self.view.addSubview(stackView)
+    }
+    
+    private func setLayouts() {
+        let screenSize = UIScreen.main.bounds.size
+        
+        stackView.snp.makeConstraints {
+            $0.width.equalTo(screenSize.width * 0.8)
+            $0.height.equalTo(screenSize.height * 0.5)
+            $0.center.equalToSuperview()
+        }
     }
 }
 
