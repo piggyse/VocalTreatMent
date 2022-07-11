@@ -60,6 +60,7 @@ final class HomeViewController: UIViewController {
     private func configUI() {
         addViews()
         setLayouts()
+        setAction()
     }
     
     private func addViews() {
@@ -79,5 +80,22 @@ final class HomeViewController: UIViewController {
             $0.center.equalToSuperview()
         }
     }
+    
+    func setAction() {
+        phonationRangeButton.addAction(UIAction { [weak self]_  in
+            self?.navigationController?.pushViewController(PhonationRangeViewController(),
+                                                          animated: true)},
+                                                          for: .touchUpInside)
+            
+        phonationTimeButton.addAction(UIAction { [weak self]_  in
+            self?.navigationController?.pushViewController(PhonationTimeViewController(),
+                                                          animated: true)},
+                                                          for: .touchUpInside)
+        wordMemorizationButton.addAction(UIAction { [weak self]_  in
+            self?.navigationController?.pushViewController(WordMemorizationViewController(),
+                                                          animated: true)},
+                                                          for: .touchUpInside)
+    }
+    
 }
 
