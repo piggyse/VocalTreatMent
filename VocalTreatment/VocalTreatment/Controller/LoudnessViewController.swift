@@ -6,11 +6,14 @@
 //
 
 import UIKit
+import SnapKit
+import AVFoundation
+import CoreAudio
 
 final class LoudnessViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .red
+        
     }
 }
