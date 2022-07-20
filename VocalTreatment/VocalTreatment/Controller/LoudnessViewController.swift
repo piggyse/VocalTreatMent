@@ -12,12 +12,20 @@ import CoreAudio
 
 final class LoudnessViewController: UIViewController {
     
-    private lazy var dbLabel: UILabel = {
+    private var defaultdB: Float = 0
+    
+    private lazy var dBLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 24, weight: .bold)
         label.textColor = .label
         label.text = "0 dB"
         return label
+    }()
+    
+    private let dBAnimationView: UIImageView = {
+        let view = UIImageView(frame: .zero)
+        view.backgroundColor = .blue
+        return view
     }()
     
     private lazy var recorder: AVAudioRecorder = .init()
@@ -28,6 +36,7 @@ final class LoudnessViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         configUI()
         initRecord()
+        setDefaultdB()
     }
     
     // Record 초기 설정
@@ -56,9 +65,8 @@ final class LoudnessViewController: UIViewController {
     }
     
     private func denyRecording() {
-        print("Permission was not allowed")
+        dBLabel.text = "권한을 설정해주세요."
     }
-    
     
     private func record() {
         let audioSession = AVAudioSession.sharedInstance()
@@ -94,11 +102,27 @@ final class LoudnessViewController: UIViewController {
                                      repeats: true)
     }
     
-    @objc func levelTimerCallback() {
+    @objc private func levelTimerCallback() {
         recorder.updateMeters()
         let level = recorder.averagePower(forChannel: 0)
-        dbLabel.text = String(format: "%.0f dBFS",  level)
-        
+        dBLabel.text = String(format: "%.0f dBFS",  level)
+        startViewAnimation(dB: level)
+    }
+    
+    private func setDefaultdB() {
+        recorder.updateMeters()
+        let level = recorder.averagePower(forChannel: 0)
+        self.defaultdB = level
+    }
+    
+    private func startViewAnimation(dB: Float) {
+        let ratio = CGFloat(defaultdB / dB)
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1.0) {
+                let scale = CGAffineTransform(scaleX: ratio, y: ratio)
+                self.dBAnimationView.transform = scale
+            }
+        }
     }
     
     private func configUI() {
@@ -107,15 +131,19 @@ final class LoudnessViewController: UIViewController {
     }
     
     private func addViews() {
-        [dbLabel].forEach {
+        [dBLabel, dBAnimationView].forEach {
             self.view.addSubview($0)
         }
     }
     
     private func setLayouts() {
-        dbLabel.snp.makeConstraints {
+        dBAnimationView.snp.makeConstraints {
             $0.center.equalToSuperview()
+            $0.size.equalTo(100)
+        }
+        
+        dBLabel.snp.makeConstraints {
+            $0.top.trailing.equalTo(view.safeAreaLayoutGuide).inset(16.0)
         }
     }
-    
 }

@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		let viewController = HomeViewController()
 		let navigationController = UINavigationController(rootViewController: viewController)
 
-		navigationController.viewControllers = [viewController, PhonationTimeViewController()]
+//		navigationController.viewControllers = [viewController, PhonationTimeViewController()]
 
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
