@@ -16,32 +16,37 @@ final class LoudnessViewController: UIViewController {
     
     private var defaultdB: Float = 0
     
+    private var isPlay: Bool = false
+    
     private lazy var buttonStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.distribution = .equalSpacing
         stackView.spacing = 16.0
+        stackView.distribution = .equalCentering
         return stackView
     }()
     
     private lazy var startButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.image = UIImage(systemName: "play.fill")
+        config.imagePlacement = .trailing
+        config.baseForegroundColor = .systemRed
+        
         let button = UIButton()
-        button.setTitle("시작", for: .normal)
-        button.setTitleColor(.label, for: .normal)
-        return button
-    }()
-    
-    private lazy var  stopButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("정지", for: .normal)
-        button.setTitleColor(.label, for: .normal)
+        button.configuration = config
         return button
     }()
     
     private lazy var replayButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.title = "다시 듣기"
+        config.imagePlacement = .trailing
+        config.image = UIImage(systemName: "arrow.clockwise.circle")
+        config.baseForegroundColor = .secondaryLabel
+        
         let button = UIButton()
-        button.setTitle("다시 듣기", for: .normal)
-        button.setTitleColor(.label, for: .normal)
+        button.configuration = config
+        button.isEnabled = false
         return button
     }()
     
@@ -88,7 +93,30 @@ final class LoudnessViewController: UIViewController {
         configUI()
         initRecord()
         setDefaultdB()
-        
+        addButtonAction()
+    }
+    
+    // Button Tap시 액션 정의
+    private func addButtonAction() {
+        let action = UIAction.init { [weak self] _ in
+            guard let self = self else { return }
+            if self.isPlay {
+                self.isPlay = false
+                self.startButton.configuration?.image = UIImage(systemName: "play.fill")
+                self.startButton.configuration?.baseForegroundColor = .systemRed
+                
+                self.replayButton.configuration?.baseForegroundColor = .label
+                self.replayButton.isEnabled = true
+            } else {
+                self.isPlay = true
+                self.startButton.configuration?.image = UIImage(systemName: "stop.fill")
+                self.startButton.configuration?.baseForegroundColor = .systemBlue
+                
+                self.replayButton.configuration?.baseForegroundColor = .secondaryLabel
+                self.replayButton.isEnabled = false
+            }
+        }
+        self.startButton.addAction(action, for: .touchUpInside)
     }
     
     // Record 초기 설정
@@ -180,9 +208,10 @@ final class LoudnessViewController: UIViewController {
     
     // Animation 시작
     private func startViewAnimation(dB: Float) {
-        let ratio = CGFloat(defaultdB / dB)
+        let ratio = CGFloat(dB / defaultdB)
+        
         DispatchQueue.main.async {
-            UIView.animate(withDuration: 1.5) {
+            UIView.animate(withDuration: 1.0) {
                 let scale = CGAffineTransform(scaleX: ratio, y: ratio)
                 self.dBAnimationView.transform = scale
             }
@@ -195,7 +224,7 @@ final class LoudnessViewController: UIViewController {
     }
     
     private func addViews() {
-        [stopButton, startButton, replayButton].forEach {
+        [startButton, replayButton].forEach {
             buttonStackView.addArrangedSubview($0)
         }
         
@@ -230,6 +259,5 @@ final class LoudnessViewController: UIViewController {
             $0.bottom.equalTo(regulatorSlider.snp.top)
             $0.centerX.equalTo(regulatorSlider.snp.centerX)
         }
-        
     }
 }
