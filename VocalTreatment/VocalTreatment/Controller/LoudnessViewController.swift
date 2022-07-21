@@ -10,9 +10,45 @@ import SnapKit
 import AVFoundation
 import CoreAudio
 
+// db / default
+
 final class LoudnessViewController: UIViewController {
     
     private var defaultdB: Float = 0
+    
+    private lazy var buttonStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 16.0
+        return stackView
+    }()
+    
+    private lazy var startButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("시작", for: .normal)
+        button.setTitleColor(.label, for: .normal)
+        return button
+    }()
+    
+    private lazy var  stopButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("정지", for: .normal)
+        button.setTitleColor(.label, for: .normal)
+        return button
+    }()
+    
+    private lazy var replayButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("다시 듣기", for: .normal)
+        button.setTitleColor(.label, for: .normal)
+        return button
+    }()
+    
+    private lazy var timerLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
     
     private lazy var dBLabel: UILabel = {
         let label = UILabel()
@@ -22,10 +58,25 @@ final class LoudnessViewController: UIViewController {
         return label
     }()
     
-    private let dBAnimationView: UIImageView = {
+    private lazy var dBAnimationView: UIImageView = {
         let view = UIImageView(frame: .zero)
         view.backgroundColor = .blue
         return view
+    }()
+    
+    private lazy var regulatorSlider: UISlider = {
+        let slider = UISlider(frame: .zero)
+        slider.maximumValue = defaultdB + 50
+        slider.minimumValue = defaultdB - 50
+        slider.addTarget(self, action: #selector(changeDefaultdB), for: .valueChanged)
+        return slider
+    }()
+    
+    private lazy var regualaorTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "민감도"
+        label.font = .boldSystemFont(ofSize: 16.0)
+        return label
     }()
     
     private lazy var recorder: AVAudioRecorder = .init()
@@ -37,6 +88,7 @@ final class LoudnessViewController: UIViewController {
         configUI()
         initRecord()
         setDefaultdB()
+        
     }
     
     // Record 초기 설정
@@ -64,10 +116,12 @@ final class LoudnessViewController: UIViewController {
         }
     }
     
+    // 권한이 거부 되었을 때
     private func denyRecording() {
         dBLabel.text = "권한을 설정해주세요."
     }
     
+    // record 시작
     private func record() {
         let audioSession = AVAudioSession.sharedInstance()
         
@@ -102,6 +156,9 @@ final class LoudnessViewController: UIViewController {
                                      repeats: true)
     }
     
+    
+    
+    // 현재 dB Display
     @objc private func levelTimerCallback() {
         recorder.updateMeters()
         let level = recorder.averagePower(forChannel: 0)
@@ -109,16 +166,23 @@ final class LoudnessViewController: UIViewController {
         startViewAnimation(dB: level)
     }
     
+    // 측정 기준 dB 변경 Slider
+    @objc private func changeDefaultdB() {
+        self.defaultdB = self.regulatorSlider.value
+    }
+    
+    // 측정 기준 dB 최초 설정
     private func setDefaultdB() {
         recorder.updateMeters()
         let level = recorder.averagePower(forChannel: 0)
         self.defaultdB = level
     }
     
+    // Animation 시작
     private func startViewAnimation(dB: Float) {
         let ratio = CGFloat(defaultdB / dB)
         DispatchQueue.main.async {
-            UIView.animate(withDuration: 1.0) {
+            UIView.animate(withDuration: 1.5) {
                 let scale = CGAffineTransform(scaleX: ratio, y: ratio)
                 self.dBAnimationView.transform = scale
             }
@@ -131,12 +195,17 @@ final class LoudnessViewController: UIViewController {
     }
     
     private func addViews() {
-        [dBLabel, dBAnimationView].forEach {
+        [stopButton, startButton, replayButton].forEach {
+            buttonStackView.addArrangedSubview($0)
+        }
+        
+        [dBLabel, dBAnimationView, regulatorSlider, regualaorTitleLabel, buttonStackView].forEach {
             self.view.addSubview($0)
         }
     }
     
     private func setLayouts() {
+        let screenSize = UIScreen.main.bounds.size
         dBAnimationView.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.size.equalTo(100)
@@ -145,5 +214,22 @@ final class LoudnessViewController: UIViewController {
         dBLabel.snp.makeConstraints {
             $0.top.trailing.equalTo(view.safeAreaLayoutGuide).inset(16.0)
         }
+        
+        regulatorSlider.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(64.0)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(screenSize.width / 3)
+        }
+        
+        regualaorTitleLabel.snp.makeConstraints {
+            $0.trailing.equalTo(regulatorSlider.snp.leading).offset(-16.0)
+            $0.centerY.equalTo(regulatorSlider.snp.centerY)
+        }
+        
+        buttonStackView.snp.makeConstraints {
+            $0.bottom.equalTo(regulatorSlider.snp.top)
+            $0.centerX.equalTo(regulatorSlider.snp.centerX)
+        }
+        
     }
 }
