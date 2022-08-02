@@ -13,6 +13,8 @@
 		8D09A3C62872C057008675EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D09A3C52872C057008675EC /* Assets.xcassets */; };
 		8D09A3D42872C141008675EC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D09A3D32872C141008675EC /* LaunchScreen.storyboard */; };
 		8D09A3D72872C3AF008675EC /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8D09A3D62872C3AF008675EC /* SnapKit */; };
+		8D418F922898E690003110AB /* ButtonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D418F912898E690003110AB /* ButtonStackView.swift */; };
+		8D418F952898EB0F003110AB /* DBView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D418F942898EB0F003110AB /* DBView.swift */; };
 		8DDAF7CB287BEBEF004C592C /* LoudnessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DDAF7CA287BEBEF004C592C /* LoudnessViewController.swift */; };
 		8DDAF7CD287BECD3004C592C /* PhonationTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DDAF7CC287BECD3004C592C /* PhonationTimeViewController.swift */; };
 		8DDAF7CF287BED29004C592C /* WordMemorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DDAF7CE287BED29004C592C /* WordMemorizationViewController.swift */; };
@@ -26,6 +28,8 @@
 		8D09A3C52872C057008675EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D09A3CA2872C057008675EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D09A3D32872C141008675EC /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8D418F912898E690003110AB /* ButtonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStackView.swift; sourceTree = "<group>"; };
+		8D418F942898EB0F003110AB /* DBView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBView.swift; sourceTree = "<group>"; };
 		8DDAF7CA287BEBEF004C592C /* LoudnessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoudnessViewController.swift; sourceTree = "<group>"; };
 		8DDAF7CC287BECD3004C592C /* PhonationTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhonationTimeViewController.swift; sourceTree = "<group>"; };
 		8DDAF7CE287BED29004C592C /* WordMemorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMemorizationViewController.swift; sourceTree = "<group>"; };
@@ -80,11 +84,29 @@
 			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
+		8D418F902898E67B003110AB /* Loudness */ = {
+			isa = PBXGroup;
+			children = (
+				8DDAF7CA287BEBEF004C592C /* LoudnessViewController.swift */,
+				8D418F932898E698003110AB /* Presentation */,
+			);
+			path = Loudness;
+			sourceTree = "<group>";
+		};
+		8D418F932898E698003110AB /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				8D418F912898E690003110AB /* ButtonStackView.swift */,
+				8D418F942898EB0F003110AB /* DBView.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
 		8DDAF7D0287BED56004C592C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				8D09A3C02872C051008675EC /* HomeViewController.swift */,
-				8DDAF7CA287BEBEF004C592C /* LoudnessViewController.swift */,
+				8D418F902898E67B003110AB /* Loudness */,
 				8DDAF7CC287BECD3004C592C /* PhonationTimeViewController.swift */,
 				8DDAF7CE287BED29004C592C /* WordMemorizationViewController.swift */,
 			);
@@ -170,9 +192,11 @@
 				8DDAF7CF287BED29004C592C /* WordMemorizationViewController.swift in Sources */,
 				8D09A3C12872C051008675EC /* HomeViewController.swift in Sources */,
 				8DDAF7CB287BEBEF004C592C /* LoudnessViewController.swift in Sources */,
+				8D418F952898EB0F003110AB /* DBView.swift in Sources */,
 				8DDAF7CD287BECD3004C592C /* PhonationTimeViewController.swift in Sources */,
 				8D09A3BD2872C051008675EC /* AppDelegate.swift in Sources */,
 				8D09A3BF2872C051008675EC /* SceneDelegate.swift in Sources */,
+				8D418F922898E690003110AB /* ButtonStackView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

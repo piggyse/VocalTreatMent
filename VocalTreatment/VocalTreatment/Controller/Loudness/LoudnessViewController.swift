@@ -16,55 +16,35 @@ final class LoudnessViewController: UIViewController {
     
     private var correction: Float = 72
     
-    private var isPlay: Bool = false
-    
-    private lazy var buttonStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 16.0
-        stackView.distribution = .equalCentering
-        return stackView
-    }()
-    
-    private lazy var startButton: UIButton = {
-        var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: "play.fill")
-        config.imagePlacement = .trailing
-        config.baseForegroundColor = .systemRed
-        
-        let button = UIButton()
-        button.configuration = config
-        return button
-    }()
-    
-    private lazy var replayButton: UIButton = {
-        var config = UIButton.Configuration.plain()
-        config.title = "다시 듣기"
-        config.imagePlacement = .trailing
-        config.image = UIImage(systemName: "arrow.clockwise.circle")
-        config.baseForegroundColor = .secondaryLabel
-        
-        let button = UIButton()
-        button.configuration = config
-        button.isEnabled = false
-        return button
-    }()
+    private let buttonStackView = ButtonStackView()
     
     private lazy var timerLabel = UILabel()
     
-    private lazy var averageDBLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 24, weight: .bold)
-        label.textColor = .label
-        return label
+    private lazy var averageDBStackView: DBView = {
+        let stackView = DBView()
+        stackView.titleLabel.text = "평균"
+        return stackView
     }()
     
-    private lazy var peakDBLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 24, weight: .bold)
-        label.textColor = .label
-        return label
+    private lazy var peakDBStackView: DBView = {
+        let stackView = DBView()
+        stackView.titleLabel.text = "최고"
+        return stackView
     }()
+    
+//    private lazy var averageDBLabel: UILabel = {
+//        let label = UILabel()
+//        label.font = .systemFont(ofSize: 24, weight: .bold)
+//        label.textColor = .label
+//        return label
+//    }()
+//
+//    private lazy var peakDBLabel: UILabel = {
+//        let label = UILabel()
+//        label.font = .systemFont(ofSize: 24, weight: .bold)
+//        label.textColor = .label
+//        return label
+//    }()
     
     private lazy var dBAnimationView: UIImageView = {
         let view = UIImageView(frame: .zero)
@@ -95,31 +75,9 @@ final class LoudnessViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         configUI()
         initRecord()
-        addButtonAction()
     }
     
-    // Button Tap시 액션 정의
-    private func addButtonAction() {
-        let action = UIAction.init { [weak self] _ in
-            guard let self = self else { return }
-            if self.isPlay {
-                self.isPlay = false
-                self.startButton.configuration?.image = UIImage(systemName: "play.fill")
-                self.startButton.configuration?.baseForegroundColor = .systemRed
-                
-                self.replayButton.configuration?.baseForegroundColor = .label
-                self.replayButton.isEnabled = true
-            } else {
-                self.isPlay = true
-                self.startButton.configuration?.image = UIImage(systemName: "stop.fill")
-                self.startButton.configuration?.baseForegroundColor = .systemBlue
-                
-                self.replayButton.configuration?.baseForegroundColor = .secondaryLabel
-                self.replayButton.isEnabled = false
-            }
-        }
-        self.startButton.addAction(action, for: .touchUpInside)
-    }
+
     
     // Record 초기 설정
     private func initRecord() {
@@ -148,7 +106,7 @@ final class LoudnessViewController: UIViewController {
     
     // 권한이 거부 되었을 때
     private func denyRecording() {
-        averageDBLabel.text = "권한을 설정해주세요."
+        averageDBStackView.titleLabel.text = "권한을 설정해주세요."
     }
     
     // record 시작
@@ -199,9 +157,15 @@ final class LoudnessViewController: UIViewController {
         let reverage = recorder.averagePower(forChannel: 0) + correction
         let peak = recorder.peakPower(forChannel: 0) + correction
         
-        averageDBLabel.text = String(format: "평균 %.0f dBFS", reverage)
-        peakDBLabel.text = String(format: "최대 %.0f dBFS", peak)
+        averageDBStackView.setDBValue(reverage)
+        peakDBStackView.setDBValue(peak)
+
 //        startViewAnimation(dB: reverage)
+    }
+    
+    
+    private func setSlider() {
+        self.regulatorSlider.value = self.correction
     }
     
     // 측정 기준 dB 변경 Slider
@@ -233,11 +197,8 @@ final class LoudnessViewController: UIViewController {
     }
     
     private func addViews() {
-        [startButton, replayButton].forEach {
-            buttonStackView.addArrangedSubview($0)
-        }
         
-        [averageDBLabel, peakDBLabel, dBAnimationView, regulatorSlider, regualaorTitleLabel, buttonStackView].forEach {
+        [averageDBStackView, peakDBStackView, dBAnimationView, regulatorSlider, regualaorTitleLabel, buttonStackView].forEach {
             self.view.addSubview($0)
         }
     }
@@ -246,16 +207,18 @@ final class LoudnessViewController: UIViewController {
         let screenSize = UIScreen.main.bounds.size
         dBAnimationView.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.size.equalTo(100)
+            $0.size.greaterThanOrEqualTo(100)
         }
         
-        averageDBLabel.snp.makeConstraints {
+        averageDBStackView.snp.makeConstraints {
             $0.top.trailing.equalTo(view.safeAreaLayoutGuide).inset(16.0)
+            $0.width.equalTo(100)
         }
         
-        peakDBLabel.snp.makeConstraints {
+        peakDBStackView.snp.makeConstraints {
             $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(16.0)
-            $0.top.equalTo(averageDBLabel.snp.bottom).offset(16.0)
+            $0.top.equalTo(averageDBStackView.snp.bottom).offset(16.0)
+            $0.width.equalTo(100)
         }
         
         regulatorSlider.snp.makeConstraints {
