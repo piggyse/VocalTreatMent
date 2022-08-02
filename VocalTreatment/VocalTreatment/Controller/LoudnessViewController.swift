@@ -14,7 +14,7 @@ import CoreAudio
 
 final class LoudnessViewController: UIViewController {
     
-    private var defaultdB: Float = 0
+    private var correction: Float = 72
     
     private var isPlay: Bool = false
     
@@ -50,16 +50,19 @@ final class LoudnessViewController: UIViewController {
         return button
     }()
     
-    private lazy var timerLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
+    private lazy var timerLabel = UILabel()
     
-    private lazy var dBLabel: UILabel = {
+    private lazy var averageDBLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 24, weight: .bold)
         label.textColor = .label
-        label.text = "0 dB"
+        return label
+    }()
+    
+    private lazy var peakDBLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.textColor = .label
         return label
     }()
     
@@ -71,9 +74,9 @@ final class LoudnessViewController: UIViewController {
     
     private lazy var regulatorSlider: UISlider = {
         let slider = UISlider(frame: .zero)
-        slider.maximumValue = defaultdB + 50
-        slider.minimumValue = defaultdB - 50
-        slider.addTarget(self, action: #selector(changeDefaultdB), for: .valueChanged)
+        slider.maximumValue = 100
+        slider.minimumValue = 0
+        slider.addTarget(self, action: #selector(changeDefaultDB), for: .valueChanged)
         return slider
     }()
     
@@ -92,7 +95,6 @@ final class LoudnessViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         configUI()
         initRecord()
-        setDefaultdB()
         addButtonAction()
     }
     
@@ -146,7 +148,7 @@ final class LoudnessViewController: UIViewController {
     
     // 권한이 거부 되었을 때
     private func denyRecording() {
-        dBLabel.text = "권한을 설정해주세요."
+        averageDBLabel.text = "권한을 설정해주세요."
     }
     
     // record 시작
@@ -172,9 +174,13 @@ final class LoudnessViewController: UIViewController {
         } catch {
             return
         }
-        
+        // Creates an audio file and prepares the system for recording.
         recorder.prepareToRecord()
+        
+        // A Boolean value that indicates whether you’ve enabled the recorder to generate audio-level metering data.
         recorder.isMeteringEnabled = true
+        
+        // Start record
         recorder.record()
         
         timer = Timer.scheduledTimer(timeInterval: 0.1,
@@ -189,33 +195,36 @@ final class LoudnessViewController: UIViewController {
     // 현재 dB Display
     @objc private func levelTimerCallback() {
         recorder.updateMeters()
-        let level = recorder.averagePower(forChannel: 0)
-        dBLabel.text = String(format: "%.0f dBFS",  level)
-        startViewAnimation(dB: level)
+        
+        let reverage = recorder.averagePower(forChannel: 0) + correction
+        let peak = recorder.peakPower(forChannel: 0) + correction
+        
+        averageDBLabel.text = String(format: "평균 %.0f dBFS", reverage)
+        peakDBLabel.text = String(format: "최대 %.0f dBFS", peak)
+//        startViewAnimation(dB: reverage)
     }
     
     // 측정 기준 dB 변경 Slider
-    @objc private func changeDefaultdB() {
-        self.defaultdB = self.regulatorSlider.value
+    @objc private func changeDefaultDB() {
+//        self.baseDB = self.regulatorSlider.value
     }
     
     // 측정 기준 dB 최초 설정
-    private func setDefaultdB() {
-        recorder.updateMeters()
-        let level = recorder.averagePower(forChannel: 0)
-        self.defaultdB = level
+    private func setDefaultDB() {
+//        recorder.updateMeters()
+//        let level = recorder.averagePower(forChannel: 0)
     }
     
     // Animation 시작
     private func startViewAnimation(dB: Float) {
-        let ratio = CGFloat(dB / defaultdB)
-        
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 1.0) {
-                let scale = CGAffineTransform(scaleX: ratio, y: ratio)
-                self.dBAnimationView.transform = scale
-            }
-        }
+//        let ratio = CGFloat(baseDB / dB)
+//
+//        DispatchQueue.main.async {
+//            UIView.animate(withDuration: 1.0) {
+//                let scale = CGAffineTransform(scaleX: ratio, y: ratio)
+//                self.dBAnimationView.transform = scale
+//            }
+//        }
     }
     
     private func configUI() {
@@ -228,7 +237,7 @@ final class LoudnessViewController: UIViewController {
             buttonStackView.addArrangedSubview($0)
         }
         
-        [dBLabel, dBAnimationView, regulatorSlider, regualaorTitleLabel, buttonStackView].forEach {
+        [averageDBLabel, peakDBLabel, dBAnimationView, regulatorSlider, regualaorTitleLabel, buttonStackView].forEach {
             self.view.addSubview($0)
         }
     }
@@ -240,8 +249,13 @@ final class LoudnessViewController: UIViewController {
             $0.size.equalTo(100)
         }
         
-        dBLabel.snp.makeConstraints {
+        averageDBLabel.snp.makeConstraints {
             $0.top.trailing.equalTo(view.safeAreaLayoutGuide).inset(16.0)
+        }
+        
+        peakDBLabel.snp.makeConstraints {
+            $0.trailing.equalTo(view.safeAreaLayoutGuide).inset(16.0)
+            $0.top.equalTo(averageDBLabel.snp.bottom).offset(16.0)
         }
         
         regulatorSlider.snp.makeConstraints {
